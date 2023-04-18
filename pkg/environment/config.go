@@ -2,7 +2,6 @@ package environment
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 )
@@ -16,13 +15,15 @@ type DBConfig struct {
 }
 
 type LoggerConfig struct {
+	LogFile string `json:"log-file"`
 }
 
 type Config struct {
-	StaticDir string   `json:"static-dir"`
-	DBConfig  DBConfig `json:"db-config"`
-	Port      int      `json:"port"`
-	Host      string   `json:"host"`
+	Port         int          `json:"port"`
+	Host         string       `json:"host"`
+	StaticDir    string       `json:"static-dir"`
+	LoggerConfig LoggerConfig `json:"logger-config"`
+	DBConfig     DBConfig     `json:"db-config"`
 }
 
 func NewConfig(configFile string) (*Config, error) {
@@ -38,8 +39,6 @@ func NewConfig(configFile string) (*Config, error) {
 		log.Printf("Can't unmarshall config json, err: %s", err.Error())
 		return nil, err
 	}
-
-	fmt.Print(config)
 
 	return &config, nil
 }

@@ -6,7 +6,7 @@ import (
 
 	"github.com/NikiTesla/geant4help"
 	"github.com/NikiTesla/geant4help/pkg/environment"
-	"github.com/NikiTesla/geant4help/pkg/routes"
+	"github.com/NikiTesla/geant4help/pkg/handler"
 	"github.com/joho/godotenv"
 )
 
@@ -16,16 +16,15 @@ func main() {
 	}
 
 	configFile := os.Getenv("CONFIGFILE")
-	cfg, err := environment.NewConfig(configFile)
+	env, err := environment.NewEnvironment(configFile)
 	if err != nil {
-		log.Fatalf("can't load config, err: %s", err.Error())
+		log.Fatalf("can't load environment, err: %s", err.Error())
 	}
 
-	rtr := routes.InitRouter()
+	rtr := handler.Handler{Env: env}.InitRouter()
 	server := geant4help.Server{}
 
-	if err := server.Run(cfg.Port, rtr); err != nil {
+	if err := server.Run(env.Config.Port, rtr); err != nil {
 		log.Fatalf("error occured during serving: %s", err.Error())
 	}
-
 }
