@@ -1,26 +1,31 @@
 package main
 
 import (
+	"log"
+	"os"
+
+	"github.com/NikiTesla/geant4help"
+	"github.com/NikiTesla/geant4help/pkg/environment"
+	"github.com/NikiTesla/geant4help/pkg/routes"
 	"github.com/joho/godotenv"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
 func main() {
-	logrus.SetFormatter(&logrus.JSONFormatter{})
-
-	if err := getConfig(); err != nil {
-		logrus.Fatalf("can't load configs, err: %s", err.Error())
-	}
-
 	if err := godotenv.Load(); err != nil {
-		logrus.Fatalf("can't load env variables, err: %s", err.Error())
+		log.Fatalf("can't load env variables, err: %s", err.Error())
 	}
 
-}
+	configFile := os.Getenv("CONFIGFILE")
+	cfg, err := environment.NewConfig(configFile)
+	if err != nil {
+		log.Fatalf("can't load config, err: %s", err.Error())
+	}
 
-func getConfig() error {
-	viper.AddConfigPath("configs")
-	viper.SetConfigName("conf.debug")
-	return viper.ReadInConfig()
+	rtr := routes.InitRouter()
+	server := geant4help.Server{}
+
+	if err := server.Run(cfg.Port, rtr); err != nil {
+		log.Fatalf("error occured during serving: %s", err.Error())
+	}
+
 }

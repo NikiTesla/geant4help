@@ -1,0 +1,13 @@
+{
+    "host": "127.0.0.1",
+    "port": 8000,
+    "static-dir": "web/static",
+    
+    "db-config": {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "username": "postgres",
+        "dbname": "geant4help",
+        "sslmode": "disable"
+    }
+}
