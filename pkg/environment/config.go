@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+
+	"go.uber.org/zap"
 )
 
 type DBConfig struct {
@@ -15,7 +17,7 @@ type DBConfig struct {
 }
 
 type LoggerConfig struct {
-	LogFile string `json:"log-file"`
+	zap.Config
 }
 
 type Config struct {

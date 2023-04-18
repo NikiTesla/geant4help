@@ -4,7 +4,15 @@
     "static-dir": "web/static",
 
     "logger-config": {
-        "log-file": "test.log"
+        "level": "debug",
+        "encoding": "json",
+        "outputPaths": ["stdout"],
+        "errorOutputPaths": ["stderr"],
+        "encoderConfig": {
+          "messageKey": "message",
+          "levelKey": "level",
+          "levelEncoder": "lowercase"
+        }
     },
     
     "db-config": {

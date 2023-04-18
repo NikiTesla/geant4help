@@ -1,9 +1,16 @@
 package environment
 
-type Logger struct {
-	level string `jsin`
-}
+import (
+	"fmt"
 
-func NewLogger(cfg LoggerConfig) (*Logger, error) {
-	return &Logger{}, nil
+	"go.uber.org/zap"
+)
+
+func NewZapLogger(cfg LoggerConfig) (*zap.Logger, error) {
+	logger, err := cfg.Build()
+	if err != nil {
+		return nil, fmt.Errorf("can't create logger with current config, err: %s", err.Error())
+	}
+
+	return logger, nil
 }
