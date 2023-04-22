@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  geant4help:
+    container_name: geant_web
+    image: geant4help
+    restart: always
+    ports:
+      - "8080:8080"
+  db:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: test_db
+    ports:
+    - "5433:5432"
