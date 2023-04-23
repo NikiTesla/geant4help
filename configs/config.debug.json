@@ -1,0 +1,25 @@
+{
+    "host": "0.0.0.0",
+    "port": 8080,
+    "static-dir": "web/static",
+
+    "logger-config": {
+        "level": "debug",
+        "encoding": "json",
+        "outputPaths": ["stdout"],
+        "errorOutputPaths": ["stderr"],
+        "encoderConfig": {
+          "messageKey": "message",
+          "levelKey": "level",
+          "levelEncoder": "lowercase"
+        }
+    },
+    
+    "db-config": {
+        "host": "127.0.0.1",
+        "port": 5432,
+        "username": "postgres",
+        "dbname": "postgres",
+        "sslmode": "disable"
+    }
+}

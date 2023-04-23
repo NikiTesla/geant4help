@@ -11,28 +11,29 @@ import (
 // }
 
 // TODO think about abstraction level, should I create next abstract level
-func CreateUser(name string, age int, salary float64, env *environment.Environment) error {
-	_, err := env.DataBase.DB.Exec("INSERT INTO users(name, age, salary) VALUES ($1, $2, $3)",
-		name, age, salary)
-
+func CreateUser(name, password_hash string, env *environment.Environment) error {
+	rows, err := env.DataBase.DB.Query("INSERT INTO users(username, password_hash) VALUES ($1, $2) RETURNING id",
+		name, password_hash)
 	if err != nil {
 		env.Logger.Error(fmt.Sprintf("can't create user, error: %s", err.Error()))
+	}
+	for rows.Next() {
+		var id int
+		rows.Scan(&id)
+		fmt.Println(id)
 	}
 
 	return nil
 }
 
-func FindUserByID(id int, env *environment.Environment) (*User, error) {
-	if id < 0 {
-		return nil, fmt.Errorf("id can't be less than zero")
+func FindUserByUsername(username string, env *environment.Environment) (int, string, error) {
+	rawQuery := env.DataBase.DB.QueryRow("SELECT id, password_hash FROM users WHERE username=$1", username)
+
+	var password_hash string
+	var id int
+	if err := rawQuery.Scan(&id, &password_hash); err != nil {
+		return -1, "", err
 	}
 
-	rawQuery := env.DataBase.DB.QueryRow("SELECT name, age, job, salary FROM users WHERE id=$1", id)
-
-	var user User
-	if err := rawQuery.Scan(&user.Name, &user.Age, &user.Job, &user.Salary); err != nil {
-		return &User{}, err
-	}
-
-	return &user, nil
+	return id, password_hash, nil
 }

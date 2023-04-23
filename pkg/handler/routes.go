@@ -4,9 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"strconv"
-
-	"github.com/NikiTesla/geant4help/pkg/repository"
 )
 
 func (h *Handler) index(w http.ResponseWriter, r *http.Request) {
@@ -36,45 +33,28 @@ func (h *Handler) help(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "help", nil)
 }
 
-func (h *Handler) createUser(w http.ResponseWriter, r *http.Request) {
-	name := r.FormValue("name")
-	age, err := strconv.Atoi(r.FormValue("age"))
+func (h *Handler) LogInPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles(
+		fmt.Sprintf("%v/html/login.html", h.Env.Config.StaticDir),
+		fmt.Sprintf("%v/html/header.html", h.Env.Config.StaticDir),
+		fmt.Sprintf("%v/html/footer.html", h.Env.Config.StaticDir),
+	)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		h.Env.Logger.Error("cannot parse form value 'age'")
-		return
-	}
-	salary, err := strconv.ParseFloat(r.FormValue("salary"), 64)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		h.Env.Logger.Error("cannot parse form value 'salary'")
-		return
+		h.Env.Logger.Error("can't parse template login.html")
 	}
 
-	if err = repository.CreateUser(name, age, salary, h.Env); err != nil {
-		h.Env.Logger.Error("cannot create user")
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
+	tmpl.ExecuteTemplate(w, "login", nil)
 }
 
-func (h *Handler) findUser(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
+func (h *Handler) SignUpPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles(
+		fmt.Sprintf("%v/html/signup.html", h.Env.Config.StaticDir),
+		fmt.Sprintf("%v/html/header.html", h.Env.Config.StaticDir),
+		fmt.Sprintf("%v/html/footer.html", h.Env.Config.StaticDir),
+	)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		h.Env.Logger.Error("cannot find user, wrong id format")
-		return
+		h.Env.Logger.Error("can't parse template signup.html")
 	}
 
-	user, err := repository.FindUserByID(id, h.Env)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		h.Env.Logger.Error(fmt.Sprintf("cannot find user, err: %s", err.Error()))
-		w.Write([]byte("No such user"))
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(user.String()))
+	tmpl.ExecuteTemplate(w, "signup", nil)
 }

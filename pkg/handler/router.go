@@ -7,11 +7,20 @@ import (
 )
 
 func (h Handler) InitRouter() *mux.Router {
+	// authorization and registration
 	rtr := mux.NewRouter()
-	rtr.HandleFunc("/", h.index)
-	rtr.HandleFunc("/help", h.help)
-	rtr.HandleFunc("/create_user", h.createUser).Methods("POST")
-	rtr.HandleFunc("/find_user", h.findUser)
+
+	auth := rtr.NewRoute().Subrouter()
+	auth.HandleFunc("/", h.index)
+	auth.HandleFunc("/login", h.LogInPage).Methods("GET")
+	auth.HandleFunc("/signup", h.SignUpPage).Methods("GET")
+	auth.HandleFunc("/login", h.logIn).Methods("POST")
+	auth.HandleFunc("/signup", h.signUp).Methods("POST")
+
+	urtr := rtr.PathPrefix("/user").Subrouter()
+	urtr.Use(h.authMiddleware)
+	urtr.HandleFunc("", h.help)
+	urtr.HandleFunc("/", h.help)
 
 	rtr.PathPrefix("/web/static").Handler(
 		http.StripPrefix("/web/static", http.FileServer(http.Dir("./web/static/"))))

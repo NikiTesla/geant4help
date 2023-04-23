@@ -1,0 +1,15 @@
+{{ define "signup" }}
+{{ template "header" }}
+
+    <h1>Регистрация</h1>
+
+    <div class="jumbotron text-center mt-5 centered">
+        <form method="post" action="/signup">
+            <input style="width: 300pt; align-self: center;" class="form-control" type="text" name="username" id="username" placeholder="username"><br>
+            <input style="width: 300pt; align-self: center;" class="form-control" type="password" name="password" id="password" placeholder="password"><br>
+            <input type="submit" class="btn btn-success">
+        </form>
+    </div>   
+
+{{ template "footer" }}
+{{ end }}
