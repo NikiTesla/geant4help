@@ -6,3 +6,6 @@ Because when I started I faced with a lack of materials in Russian so I had to l
 
 So if you don't want to read Geant4 documentation or watch youtube videos (all in English), you will be able to use this website soon.
 Meybe you will find something interesting there for your scientific life
+
+So if you don't want to read Geant4 documentation or watch youtube videos (all in English), you will be able to use this website soon.
+Meybe you will find something interesting there for your scientific life
