@@ -15,19 +15,25 @@ type User struct {
 
 func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
-	password_hash, err := bcrypt.GenerateFromPassword([]byte(r.FormValue("password")), 1)
+	password := r.FormValue("password")
+
+	if len(password) < 8 || len(username) < 8 {
+		RedirectWothCookie(w, r, "Not enough length for username or password. Should be more than 8", "/signup")
+		return
+	}
+
+	password_hash, err := bcrypt.GenerateFromPassword([]byte(password), 1)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		h.Env.Logger.Error("cannot generate hash from password")
+		RedirectWothCookie(w, r, "Cannot create user, check data", "/signup")
 		return
 	}
 
 	if err = repository.CreateUser(username, string(password_hash), h.Env); err != nil {
-		h.Env.Logger.Error("cannot create user")
+		RedirectWothCookie(w, r, "Cannot create user, check data", "/signup")
 		return
 	}
 
-	http.Redirect(w, r, "/login", http.StatusPermanentRedirect)
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func (h *Handler) logIn(w http.ResponseWriter, r *http.Request) {
@@ -36,15 +42,12 @@ func (h *Handler) logIn(w http.ResponseWriter, r *http.Request) {
 
 	id, password_hash, err := repository.FindUserByUsername(username, h.Env)
 	if err != nil {
-		w.Header().Add("err", "Can't find user with this username")
-		r.Method = "GET"
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		RedirectWothCookie(w, r, "Wrong username or password", "/login")
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(password_hash), []byte(password)); err != nil {
-		w.Header().Add("err", "Wrong password")
-		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		RedirectWothCookie(w, r, "Wrong username or password", "/login")
 		return
 	}
 

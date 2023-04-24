@@ -16,11 +16,12 @@ func CreateUser(name, password_hash string, env *environment.Environment) error 
 		name, password_hash)
 	if err != nil {
 		env.Logger.Error(fmt.Sprintf("can't create user, error: %s", err.Error()))
+		return err
 	}
+
 	for rows.Next() {
 		var id int
 		rows.Scan(&id)
-		fmt.Println(id)
 	}
 
 	return nil

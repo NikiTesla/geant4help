@@ -43,7 +43,7 @@ func (h *Handler) LogInPage(w http.ResponseWriter, r *http.Request) {
 		h.Env.Logger.Error("can't parse template login.html")
 	}
 
-	tmpl.ExecuteTemplate(w, "login", nil)
+	tmpl.ExecuteTemplate(w, "login", GetCookieErrMessage(w, r, "/login"))
 }
 
 func (h *Handler) SignUpPage(w http.ResponseWriter, r *http.Request) {
@@ -56,5 +56,5 @@ func (h *Handler) SignUpPage(w http.ResponseWriter, r *http.Request) {
 		h.Env.Logger.Error("can't parse template signup.html")
 	}
 
-	tmpl.ExecuteTemplate(w, "signup", nil)
+	tmpl.ExecuteTemplate(w, "signup", GetCookieErrMessage(w, r, "/signup"))
 }
