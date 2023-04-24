@@ -1,0 +1,18 @@
+{{ define "user" }}
+{{ template "header" }}
+
+<h1>Ведутся работы</h1>
+<h2>Скоро тут будет страница пользователя</h2>
+<div>
+    <p>But now we know some information about you</p><br/>
+    <p>Name: {{.Name}} </p>
+    <p>Email: {{.Email}} </p>
+    <p>Age: {{.Age}} </p>
+    <p>Job: {{.Job}} </p>
+    <p>Salary: {{.Salary}} </p><br/>
+    <p>And you can edit it if you want</p>
+    <a href="/user/edit_information" class="btn">Edit information</a>
+</div>
+
+{{ template "footer" }}
+{{ end }}

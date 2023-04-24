@@ -19,8 +19,8 @@ func (h Handler) InitRouter() *mux.Router {
 
 	urtr := rtr.PathPrefix("/user").Subrouter()
 	urtr.Use(h.authMiddleware)
-	urtr.HandleFunc("", h.help)
-	urtr.HandleFunc("/", h.help)
+	urtr.HandleFunc("", h.UserPage)
+	urtr.HandleFunc("/", h.UserPage)
 
 	rtr.PathPrefix("/web/static").Handler(
 		http.StripPrefix("/web/static", http.FileServer(http.Dir("./web/static/"))))

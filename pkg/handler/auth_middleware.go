@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 )
 
@@ -19,13 +20,15 @@ func (h *Handler) authMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		if _, err := ParseToken(token); err != nil {
+		userId, err := ParseToken(token)
+		if err != nil {
 			RedirectWothCookie(w, r, "Wrong username or password", "/login")
 			return
 		}
 
 		// h.Env.Logger.Info(fmt.Sprintf("id: %d", userId))
 		w.WriteHeader(http.StatusAccepted)
+		w.Header().Add("user-id", fmt.Sprint(userId))
 		next.ServeHTTP(w, r)
 	})
 }

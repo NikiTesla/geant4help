@@ -3,12 +3,9 @@ package repository
 import (
 	"fmt"
 
+	"github.com/NikiTesla/geant4help"
 	"github.com/NikiTesla/geant4help/pkg/environment"
 )
-
-// type Repo struct {
-// 	Env environment.Environment
-// }
 
 // TODO think about abstraction level, should I create next abstract level
 func CreateUser(name, password_hash string, env *environment.Environment) error {
@@ -22,6 +19,12 @@ func CreateUser(name, password_hash string, env *environment.Environment) error 
 	for rows.Next() {
 		var id int
 		rows.Scan(&id)
+
+		_, err := env.DataBase.DB.Query("INSERT INTO users_info(id) VALUES ($1)", id)
+		if err != nil {
+			env.Logger.Error(fmt.Sprintf("can't create user, error: %s", err.Error()))
+			return err
+		}
 	}
 
 	return nil
@@ -37,4 +40,17 @@ func FindUserByUsername(username string, env *environment.Environment) (int, str
 	}
 
 	return id, password_hash, nil
+}
+
+func FindUserByID(id int, env *environment.Environment) (*geant4help.User, error) {
+	query := "SELECT username, name, email, job, salary from users join users_info using (id) WHERE id=$1"
+	row := env.DataBase.DB.QueryRow(query, id)
+
+	var user geant4help.User
+	if err := row.Scan(&user.Username, &user.Name, &user.Email, &user.Job, &user.Salary); err != nil {
+		env.Logger.Error(err.Error())
+		return nil, err
+	}
+
+	return &user, nil
 }

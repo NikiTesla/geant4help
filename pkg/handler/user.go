@@ -7,18 +7,12 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type User struct {
-	Username string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
 func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
 	username := r.FormValue("username")
 	password := r.FormValue("password")
 
-	if len(password) < 8 || len(username) < 8 {
-		RedirectWothCookie(w, r, "Not enough length for username or password. Should be more than 8", "/signup")
+	if len(password) < 6 || len(username) < 6 {
+		RedirectWothCookie(w, r, "Not enough length for username or password. Should be more than 6", "/signup")
 		return
 	}
 
@@ -29,7 +23,7 @@ func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err = repository.CreateUser(username, string(password_hash), h.Env); err != nil {
-		RedirectWothCookie(w, r, "Cannot create user, check data", "/signup")
+		RedirectWothCookie(w, r, "User already exists", "/signup")
 		return
 	}
 
