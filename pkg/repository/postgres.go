@@ -43,14 +43,26 @@ func FindUserByUsername(username string, env *environment.Environment) (int, str
 }
 
 func FindUserByID(id int, env *environment.Environment) (*geant4help.User, error) {
-	query := "SELECT username, name, email, job, salary from users join users_info using (id) WHERE id=$1"
+	query := "SELECT username, name, email, job, age, salary from users join users_info using (id) WHERE id=$1"
 	row := env.DataBase.DB.QueryRow(query, id)
 
 	var user geant4help.User
-	if err := row.Scan(&user.Username, &user.Name, &user.Email, &user.Job, &user.Salary); err != nil {
+	if err := row.Scan(&user.Username, &user.Name, &user.Email, &user.Job, &user.Age, &user.Salary); err != nil {
 		env.Logger.Error(err.Error())
 		return nil, err
 	}
 
 	return &user, nil
+}
+
+func EditUserInfo(id int, name, email string, age int, job string, env *environment.Environment) error {
+	query := "UPDATE users_info SET name=$1, email=$2, age=$3, job=$4 WHERE id=$5"
+
+	_, err := env.DataBase.DB.Query(query, name, email, age, job, id)
+	if err != nil {
+		env.Logger.Error(fmt.Sprintf("can't edit user info, error: %s", err.Error()))
+		return err
+	}
+
+	return nil
 }

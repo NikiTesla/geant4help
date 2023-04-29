@@ -16,13 +16,13 @@ func (h *Handler) authMiddleware(next http.Handler) http.Handler {
 
 		token := cookie.Value
 		if token == "" {
-			RedirectWothCookie(w, r, "You are not authorized", "/login")
+			RedirectWithCookie(w, r, "You are not authorized", "/login")
 			return
 		}
 
 		userId, err := ParseToken(token)
 		if err != nil {
-			RedirectWothCookie(w, r, "Wrong username or password", "/login")
+			RedirectWithCookie(w, r, "Wrong username or password", "/login")
 			return
 		}
 

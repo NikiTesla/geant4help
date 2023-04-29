@@ -1,0 +1,28 @@
+{{ define "editUserInfo" }}
+{{ template "header" }}
+
+<h1>Ведутся работы</h1>
+<h2>Скоро тут будет страница пользователя</h2>
+<div>
+    <form action="/user/edit_information" method="post">
+    <p>Please enter information we should know about you</p>
+
+    <!-- <p>Name: </p> -->
+    <input type="text" name="name" id="name" placeholder="Name" style="margin:5pt"><br/>
+
+    <!-- <p>Email: {{.Email}} </p> -->
+    <input type="text" name="email" id="email" placeholder="Email" style="margin:5pt"><br/>
+
+    <!-- <p>Age: {{.Age}} </p> -->
+    <input type="text" name="age" id="age" placeholder="Age" style="margin:5pt"><br/>
+
+    <!-- <p>Job: {{.Job}} </p> -->
+    <input type="text" name="job" id="job" placeholder="Job" style="margin:5pt"><br/>
+
+    <!-- <p>Salary: {{.Salary}} </p><br/> -->
+    <input type="submit" class="btn btn-success">
+</form>
+</div>
+
+{{ template "footer" }}
+{{ end }}

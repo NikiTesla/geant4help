@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/NikiTesla/geant4help/pkg/repository"
 	"golang.org/x/crypto/bcrypt"
@@ -12,18 +13,18 @@ func (h *Handler) signUp(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 
 	if len(password) < 6 || len(username) < 6 {
-		RedirectWothCookie(w, r, "Not enough length for username or password. Should be more than 6", "/signup")
+		RedirectWithCookie(w, r, "Not enough length for username or password. Should be more than 6", "/signup")
 		return
 	}
 
 	password_hash, err := bcrypt.GenerateFromPassword([]byte(password), 1)
 	if err != nil {
-		RedirectWothCookie(w, r, "Cannot create user, check data", "/signup")
+		RedirectWithCookie(w, r, "Cannot create user, check data", "/signup")
 		return
 	}
 
 	if err = repository.CreateUser(username, string(password_hash), h.Env); err != nil {
-		RedirectWothCookie(w, r, "User already exists", "/signup")
+		RedirectWithCookie(w, r, "User already exists", "/signup")
 		return
 	}
 
@@ -36,12 +37,12 @@ func (h *Handler) logIn(w http.ResponseWriter, r *http.Request) {
 
 	id, password_hash, err := repository.FindUserByUsername(username, h.Env)
 	if err != nil {
-		RedirectWothCookie(w, r, "Wrong username or password", "/login")
+		RedirectWithCookie(w, r, "Wrong username or password", "/login")
 		return
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(password_hash), []byte(password)); err != nil {
-		RedirectWothCookie(w, r, "Wrong username or password", "/login")
+		RedirectWithCookie(w, r, "Wrong username or password", "/login")
 		return
 	}
 
@@ -49,6 +50,7 @@ func (h *Handler) logIn(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		h.Env.Logger.Error("cannot generate token")
 		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	// h.Env.Logger.Info(token)
@@ -59,4 +61,30 @@ func (h *Handler) logIn(w http.ResponseWriter, r *http.Request) {
 	})
 
 	http.Redirect(w, r, "/user/", http.StatusSeeOther)
+}
+
+func (h *Handler) editUserInfo(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(w.Header().Get("user-id"))
+	if err != nil {
+		RedirectWithCookie(w, r, err.Error(), "/user")
+		return
+	}
+
+	name := r.FormValue("name")
+	email := r.FormValue("email")
+	age, err := strconv.Atoi(r.FormValue("age"))
+	if err != nil {
+		RedirectWithCookie(w, r, err.Error(), "/user")
+		return
+	}
+
+	job := r.FormValue("job")
+
+	err = repository.EditUserInfo(id, name, email, age, job, h.Env)
+	if err != nil {
+		RedirectWithCookie(w, r, err.Error(), "/user")
+		return
+	}
+
+	h.userPage(w, r)
 }

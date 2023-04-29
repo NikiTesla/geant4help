@@ -21,8 +21,8 @@ func GetCookieErrMessage(w http.ResponseWriter, r *http.Request, path string) st
 	return msg
 }
 
-// RedirectWothCookie redirects request to url with cookie Err: msg
-func RedirectWothCookie(w http.ResponseWriter, r *http.Request, msg, url string) {
+// RedirectWithCookie redirects request to url with cookie Err: msg
+func RedirectWithCookie(w http.ResponseWriter, r *http.Request, msg, url string) {
 	http.SetCookie(w, &http.Cookie{
 		Name:  "Err",
 		Value: msg,
