@@ -11,16 +11,19 @@ func (h Handler) InitRouter() *mux.Router {
 	rtr := mux.NewRouter()
 
 	auth := rtr.NewRoute().Subrouter()
-	auth.HandleFunc("/", h.index)
+	auth.HandleFunc("/", h.indexPage)
+	auth.HandleFunc("/help", h.helpPage)
 	auth.HandleFunc("/login", h.logInPage).Methods("GET")
 	auth.HandleFunc("/signup", h.signUpPage).Methods("GET")
 	auth.HandleFunc("/login", h.logIn).Methods("POST")
 	auth.HandleFunc("/signup", h.signUp).Methods("POST")
+	auth.HandleFunc("/signout", h.signOut).Methods("GET")
 
 	urtr := rtr.PathPrefix("/user").Subrouter()
 	urtr.Use(h.authMiddleware)
-	urtr.HandleFunc("", h.userPage)
-	urtr.HandleFunc("/", h.userPage)
+	urtr.HandleFunc("", h.userIndexPage)
+	urtr.HandleFunc("/", h.userIndexPage)
+	urtr.HandleFunc("/profile", h.userPage)
 	urtr.HandleFunc("/edit_information", h.editUserInfoPage).Methods("GET")
 	urtr.HandleFunc("/edit_information", h.editUserInfo).Methods("POST")
 

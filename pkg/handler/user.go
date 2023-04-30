@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/NikiTesla/geant4help/pkg/repository"
 	"golang.org/x/crypto/bcrypt"
@@ -87,4 +88,16 @@ func (h *Handler) editUserInfo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	h.userPage(w, r)
+}
+
+func (h *Handler) signOut(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "jwt-token",
+		Value:    "fbsdfsd",
+		Path:     "/",
+		Expires:  time.Unix(0, 0),
+		HttpOnly: true,
+	})
+
+	h.indexPage(w, r)
 }

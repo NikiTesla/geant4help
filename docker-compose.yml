@@ -13,9 +13,9 @@ services:
       volumes:
       - db-data:/var/lib/postgresql/data
 
-  geant4help:
+  geant4web:
     container_name: geant-web
-    image: geant4help
+    image: geant4web
     depends_on:
     - db
     links:
