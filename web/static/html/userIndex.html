@@ -1,5 +1,5 @@
 {{ define "user_index" }}
-{{ template "user_header" }}
+{{ template "user_header" . }}
 
 <!-- 
 <div class="centered">
@@ -7,18 +7,54 @@
         (Там можно найти документацию и скачать Geant4)
     </p>
 </div> -->
-
-    <h1>Ведутся работы</h1>
-    <h2>Здесь скоро появится много информации про Geant4</h2>
+    <div class="bg-dark me-md-3 p-3 px-3 pt-md-5 px-md-5 text-white overflow-hidden">
+        <h1>Мы готовы приступить к твоему обучению Geant4 и созданию первого (или очередного) проекта</h1>
     
-    <div>
-        <a href="https://www.youtube.com/watch?v=Lxb4WZyKeCE&list=PLLybgCU6QCGWgzNYOV0SKen9vqg4KXeVL&ab_channel=PhysicsMatters"
-                    target="_blank"><p>А тут один гений уже все рассказал (но на английском)</p></a>
+        <h3>
+            <a href="https://www.youtube.com/watch?v=Lxb4WZyKeCE&list=PLLybgCU6QCGWgzNYOV0SKen9vqg4KXeVL&ab_channel=PhysicsMatters" class="link-light"
+                        target="_blank"><p>Тут один гений уже все рассказал (но на английском)</p></a>
+        </h3>
+    
+        <!-- <div class="centered">
+            <img src="/web/static/img/gophers.jpg" style="height: 700px;">
+        </div>     -->
+        <div class="mr-md-3 pt-3 px-3 pt-md-5 px-md-5 text-center overflow-hidden">
+            <h4>Если такой вариант нам не подошел - выбирай свой этап путешествия в мир компьютерного моделирования частиц</h4>
+            <div class="list-group container" style="width: 40%;">
+                <a href="#installation" class="list-group-item list-group-item-action">Установка Geant4</a>
+                <a href="#first_project" class="list-group-item list-group-item-action">Создание первого проекта</a>
+                <a href="#macroses" class="list-group-item list-group-item-action">Настройка с помощью макросов</a>
+                <a href="#start" class="list-group-item list-group-item-action">Запуск программы</a>
+              </div>
+        </div>
     </div>
 
-    <div class="centered">
+    <div class="container mt-4">
+        <div id="installation">
+            <h2>Установка Geant4</h2>
+                <div class="centered">
         <img src="/web/static/img/gophers.jpg" style="height: 700px;">
     </div>    
+        </div>
+        <div id="first_project">
+            <h2>Создание первого проекта</h2>
+            <div class="centered">
+                <img src="/web/static/img/gophers.jpg" style="height: 700px;">
+            </div>    
+        </div>
+        <div id="macroses">
+            <h2>Настройка с помощью макросов</h2>
+            <div class="centered">
+                <img src="/web/static/img/gophers.jpg" style="height: 700px;">
+            </div>    
+        </div>
+        <div id="start">
+            <h2>Запуск программы</h2>
+            <div class="centered">
+                <img src="/web/static/img/gophers.jpg" style="height: 700px;">
+            </div>    
+        </div>
+    </div>
 
-{{ template "user_footer" }}
+{{ template "user_footer" . }}
 {{ end }}

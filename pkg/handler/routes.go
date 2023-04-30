@@ -75,7 +75,6 @@ func (h *Handler) signUpPage(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) userIndexPage(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(w.Header().Get("user-id"))
-	h.Env.Logger.Info(fmt.Sprint(id))
 	if err != nil {
 		h.Env.Logger.Error("cannot parse user id")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -103,7 +102,6 @@ func (h *Handler) userIndexPage(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) userPage(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(w.Header().Get("user-id"))
-	h.Env.Logger.Info(fmt.Sprint(id))
 	if err != nil {
 		h.Env.Logger.Error("cannot parse user id")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -132,7 +130,6 @@ func (h *Handler) userPage(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) editUserInfoPage(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(w.Header().Get("user-id"))
-	// h.Env.Logger.Info(fmt.Sprint(id))
 	if err != nil {
 		h.Env.Logger.Error("cannot parse user id")
 		w.WriteHeader(http.StatusInternalServerError)
