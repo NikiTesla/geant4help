@@ -15,7 +15,7 @@ services:
 
   geant4web:
     container_name: geant-web
-    image: geant4web
+    image: geant4help
     depends_on:
     - db
     links:
