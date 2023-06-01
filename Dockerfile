@@ -7,6 +7,6 @@ COPY go.mod go.sum ./
 RUN go mod download && go mod verify
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o test cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o geant4help cmd/main.go
 
-CMD ["./test"]
+CMD ["./geant4help"]

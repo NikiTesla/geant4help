@@ -1,0 +1,15 @@
+G4Box* detector_solid = new G4Box("detector", sizeX/2,
+                                              sizeY/2,
+                                              sizeZ/2);
+
+G4LogicalVolume* detector_logic
+      = new G4LogicalVolume(detector_solid, material, "detector");
+
+new G4PVPlacement(0,              // no rotation
+                  G4ThreeVector(0., 0., 0.), // translation vector
+                  detector_logic, // its logical volume
+                  "detector",     // its name
+                  logicTreatmentRoom,    // its mother  volume
+                  true,          // no boolean operation
+                  0,              // copy number
+                  true);          // overlaps checking

@@ -36,9 +36,12 @@ func (h *Handler) helpPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handler) logInPage(w http.ResponseWriter, r *http.Request) {
-	if _, err := r.Cookie("jwt-token"); err == nil {
-		http.Redirect(w, r, "/user/", http.StatusSeeOther)
-		return
+	errMsg := GetCookieErrMessage(w, r, "/login")
+	if errMsg == "" {
+		if _, err := r.Cookie("jwt-token"); err == nil {
+			http.Redirect(w, r, "/user/", http.StatusSeeOther)
+			return
+		}
 	}
 
 	tmpl, err := template.ParseFiles(

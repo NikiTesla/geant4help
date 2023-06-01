@@ -26,6 +26,8 @@ func (h Handler) InitRouter() *mux.Router {
 	urtr.HandleFunc("/profile", h.userPage)
 	urtr.HandleFunc("/edit_information", h.editUserInfoPage).Methods("GET")
 	urtr.HandleFunc("/edit_information", h.editUserInfo).Methods("POST")
+	urtr.HandleFunc("/codegen", h.codeGenPage).Methods("GET")
+	urtr.HandleFunc("/codegen", h.codeGen).Methods("POST")
 
 	rtr.PathPrefix("/web/static").Handler(
 		http.StripPrefix("/web/static", http.FileServer(http.Dir("./web/static/"))))

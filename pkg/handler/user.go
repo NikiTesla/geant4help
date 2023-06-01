@@ -56,9 +56,10 @@ func (h *Handler) logIn(w http.ResponseWriter, r *http.Request) {
 
 	// h.Env.Logger.Info(token)
 	http.SetCookie(w, &http.Cookie{
-		Name:  "jwt-token",
-		Value: token,
-		Path:  "/",
+		Name:    "jwt-token",
+		Value:   token,
+		Path:    "/",
+		Expires: time.Now().Add(24 * time.Hour),
 	})
 
 	http.Redirect(w, r, "/user/", http.StatusSeeOther)

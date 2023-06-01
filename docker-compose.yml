@@ -1,9 +1,8 @@
 version: '3.8'
 services:
   db:
-      container_name: postgres
-      image: postgres
-      restart: always
+      container_name: geant4_pg
+      image: postgres:15
       environment:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: pass
@@ -13,14 +12,13 @@ services:
       volumes:
       - db-data:/var/lib/postgresql/data
 
-  geant4web:
-    container_name: geant-web
+  geant4help:
+    container_name: geant4help
     image: geant4help
     depends_on:
     - db
     links:
     - db
-    restart: always
     ports:
     - "8080:8080"
 volumes:

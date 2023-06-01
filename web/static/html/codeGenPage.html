@@ -1,0 +1,37 @@
+{{ define "codeGenPage" }}
+{{ template "user_header" . }}
+
+<h1>Страница кодогенерации</h1>
+
+<div>
+    <form action="/user/codegen" method="post">
+    <h2>Введите параметры моделирвания</h2>
+
+    <label for="shapes">Выберите форму: </label>
+    <select id="shapes" name="shapes">
+        <option value="параллелепипед">Параллелепипед</option>
+        <option value="шар">Шар</option>
+        <option value="цилиндр">Цилиндр</option>
+        <option value="шаровой слой">Шаровой слой</option>
+        <option value="цилиндр">Цилиндр</option>
+    </select><br/>
+
+    <input type="text" name="size_x" id="size_x" placeholder="Размер по х" style="margin:5pt"><br/>
+    <input type="text" name="size_y" id="size_y" placeholder="Размер по у" style="margin:5pt"><br/>
+    <input type="text" name="size_z" id="size_z" placeholder="Размер по z" style="margin:5pt"><br/>
+    <input type="text" name="inner_r" id="inner_r" placeholder="Inner Radius" style="margin:5pt"><br/>
+    <input type="text" name="outer_r" id="outer_r" placeholder="Outer Radius" style="margin:5pt"><br/>
+
+    <label for="material">Выберите материал: </label>
+    <select id="material" name="material">
+        <option value="вода">Вода</option>
+        <option value="алюминий">Алюминий</option>
+        <option value="вольфрам">Вольфрам</option>
+    </select><br/>
+
+    <input type="submit" class="btn btn-success">
+</form>
+</div>
+
+{{ template "user_footer" . }}
+{{ end }}
